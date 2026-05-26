@@ -13,8 +13,6 @@ from skimage import util
 # Librería de señales para comparar
 import scipy.signal as signal
 
-# Configuración de matplotlib
-%matplotlib inline
 plt.rcParams["figure.figsize"] = (16, 5)
 
 def filtro_mediana(imagen, K=3):
