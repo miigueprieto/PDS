@@ -43,5 +43,10 @@ def filtro_homomorfico(imagen, frec_corte=30, a=0.5, b=1.5):
     # Si era en escala de grises, no hay que hacer nada más
     else:
         img_final = img_exp
-
+        
+    img_min = np.min(img_final)
+    img_max = np.max(img_final)
+    
+    img_final = (img_final - img_min) / (img_max - img_min)
+    
     return img_final
