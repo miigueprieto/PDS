@@ -8,6 +8,7 @@ import cv2
 # importamos los filtros
 from filtrosepia import filtro_sepia
 from Mediana import filtro_mediana
+from Media import filtro_media
 from filtrosemitono import filtro_semitono
 from convolucion import convolucion_manual
 from filtrohomomorfico import filtro_homomorfico
@@ -52,6 +53,9 @@ class ProcesadorImagenesApp:
         
         btn_mediana = tk.Button(frame_controles, text="Aplicar Mediana", command=self.aplicar_mediana, **estilo_btn)
         btn_mediana.pack(pady=4, fill=tk.X)
+
+        btn_media = tk.Button(frame_controles, text="Aplicar Media", command=self.aplicar_media, **estilo_btn)
+        btn_media.pack(pady=4, fill=tk.X)
 
         btn_semitono = tk.Button(frame_controles, text="Aplicar Semitono", command=self.aplicar_semitono, **estilo_btn)
         btn_semitono.pack(pady=4, fill=tk.X)
@@ -121,6 +125,16 @@ class ProcesadorImagenesApp:
         img_gris = cv2.cvtColor(self.imagen_procesada_cv, cv2.COLOR_RGB2GRAY)
         resultado_gris = filtro_mediana(img_gris, K=3)
         self.imagen_procesada_cv = cv2.cvtColor(resultado_gris, cv2.COLOR_GRAY2RGB)
+        self.mostrar_imagen(self.imagen_procesada_cv)
+
+    def aplicar_media(self):
+        if self.imagen_original_cv is None: return
+        print("procesando media...")
+        # Pasamos a gris porque convolve2d de scipy es para 2D
+        img_gris = cv2.cvtColor(self.imagen_procesada_cv, cv2.COLOR_RGB2GRAY)
+        resultado_float = filtro_media(img_gris, K=3)
+        resultado_8u = np.clip(resultado_float, 0, 255).astype(np.uint8)
+        self.imagen_procesada_cv = cv2.cvtColor(resultado_8u, cv2.COLOR_GRAY2RGB)
         self.mostrar_imagen(self.imagen_procesada_cv)
 
     def aplicar_semitono(self):
